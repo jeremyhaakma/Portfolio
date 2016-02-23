@@ -1,3 +1,0 @@
-# ! /bin/bash
-java AntMaker
-java etude13 < generatedAnts.txt &

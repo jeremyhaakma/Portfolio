@@ -1,5 +1,0 @@
-select fname, lname, plocation
-from employee,
-where dno in
-      (select dnumber
-              from dept

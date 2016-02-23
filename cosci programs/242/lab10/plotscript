@@ -1,6 +1,0 @@
-set key left
-set term postscript color solid
-set title "Sort comparison - jhaakma"
-set xlabel "Number of items"
-set ylabel "Time"
-plot 

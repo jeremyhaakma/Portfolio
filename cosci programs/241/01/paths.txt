@@ -1,9 +1,0 @@
-absolute
-relative
-absolute
-relative
-absolute
-relative
-relative
-absolute
-absolute

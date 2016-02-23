@@ -1,3 +1,0 @@
-insert into lab2a values(1, 2, 'hello', 09-JAN-1990);
-
-COMMIT;

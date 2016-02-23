@@ -1,9 +1,0 @@
-public Class testfile{
-
-    public static void main(String[] args){
-        Scanner sc = new Scanner("letter-frequencies.txt");
-        System.out.println(sc.next());
-    }
-
-
-}

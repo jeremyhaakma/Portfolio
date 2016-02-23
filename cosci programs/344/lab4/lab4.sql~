@@ -1,4 +1,0 @@
-DROP TABLE schedule;
-CREATE TABLE schedule
-                (d DATE,
-                t DATE; );
