@@ -1,0 +1,223 @@
+Plane
+Length 100
+Width 100
+Duration 800
+
+Ant
+xPos 48
+yPos 25
+infected false
+NWNE_bbww
+WNEW_bbbb
+
+Ant
+xPos 87
+yPos 23
+infected false
+NEWE_wbww
+ESEE_bbbb
+
+Ant
+xPos 36
+yPos 50
+infected false
+NNSN_wwbw
+WEWS_wwbb
+
+Ant
+xPos 61
+yPos 24
+infected false
+NEEN_wbbw
+EWNN_wbbw
+
+Ant
+xPos 68
+yPos 71
+infected false
+SWSS_bbbw
+NNNW_bwww
+
+Ant
+xPos 45
+yPos 3
+infected false
+WEWE_wbbb
+EEWW_wbww
+
+Ant
+xPos 5
+yPos 17
+infected false
+NNEW_bbwb
+EENN_bbwb
+
+Ant
+xPos 84
+yPos 80
+infected false
+NSSW_bwbb
+SWWW_wbww
+
+Ant
+xPos 27
+yPos 30
+infected false
+NESS_bwbb
+WWEN_wwbw
+
+Ant
+xPos 75
+yPos 47
+infected false
+NSNW_bbwb
+SWWS_bbwb
+
+Ant
+xPos 69
+yPos 53
+infected false
+WENE_wwbw
+EESE_wbbw
+
+Ant
+xPos 22
+yPos 62
+infected false
+EWWW_wbww
+EWNW_wwwb
+
+Ant
+xPos 31
+yPos 99
+infected false
+NESN_wwww
+SNWS_bwww
+
+Ant
+xPos 37
+yPos 80
+infected false
+EEWN_bbww
+SESE_wbwb
+
+Ant
+xPos 6
+yPos 92
+infected false
+WNSW_wwwb
+ENWN_bwww
+
+Ant
+xPos 17
+yPos 88
+infected false
+ENEN_wbww
+ESSW_wbbw
+
+Ant
+xPos 64
+yPos 89
+infected false
+WSNE_bbwb
+NNES_wwwb
+
+Ant
+xPos 96
+yPos 51
+infected false
+NSSS_wwbw
+SNWN_wwbb
+
+Ant
+xPos 50
+yPos 70
+infected false
+WNWW_wbwb
+ENNW_wwbw
+
+Ant
+xPos 62
+yPos 43
+infected false
+ENSN_bwbb
+WWEE_wwbw
+
+Ant
+xPos 27
+yPos 2
+infected false
+NSSE_bwbw
+NSEE_bwww
+
+Ant
+xPos 72
+yPos 64
+infected false
+NNSN_bwwb
+SNNS_bbww
+
+Ant
+xPos 71
+yPos 51
+infected false
+SNEW_wwbw
+NWNW_wbww
+
+Ant
+xPos 41
+yPos 34
+infected false
+NSEN_bwwb
+ENEN_bwbb
+
+Ant
+xPos 97
+yPos 28
+infected false
+WNNN_wwbw
+SENW_wbww
+
+Ant
+xPos 48
+yPos 49
+infected false
+NSNN_bwbb
+WSES_bbwb
+
+Ant
+xPos 78
+yPos 73
+infected false
+SSWS_wwww
+WSES_bwww
+
+Ant
+xPos 17
+yPos 62
+infected false
+WNWS_bbww
+NEWW_wbbb
+
+Ant
+xPos 52
+yPos 26
+infected false
+WSWE_wwbw
+WWEN_wwwb
+
+Ant
+xPos 25
+yPos 50
+infected false
+SWNW_wwwb
+ESNN_wwww
+
+Ant
+xPos 99
+yPos 1
+infected true
+NSNW_wbbb
+WSES_wwbb
+
+

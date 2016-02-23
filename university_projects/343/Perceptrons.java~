@@ -1,0 +1,121 @@
+import java.util.Random;
+import java.util.ArrayList;
+
+public class Perceptrons {
+  
+  //initialise
+  
+  static double[] weight = new double[3]; //array of ws
+  
+  static int example = 0;
+  static int epochs = 0;
+  static int correct = 0;  
+  static int numExamples = 4;
+  static int[][] examples = new int[numExamples][4];
+  
+  public static void main(String[] args) { 
+    
+    Random rand = new Random(); //random generator
+    
+    double alpha = rand.nextDouble(); //alpha
+    
+    
+    for (int i = 0; i< 3; i++){
+      weight[i] = rand.nextDouble();
+      if (rand.nextBoolean()){
+        weight[i] *= -1;
+      }                         //sets weights to random between -1 and 1
+    }   
+    
+    
+    /*
+    for (int row = 0; row < numExamples; row++){
+      examples[row][0] = -1;
+      for (int a = 1; a < 4; a++){
+        examples[row][a] = rand.nextInt(2); //randomly generated training data
+      }
+    } 
+    */
+    
+    
+    int[][] examples = { 
+      {-1, 1, 1, 1},
+      {-1, 1, 0, 0},
+      {-1, 0, 1, 0},
+      {-1, 0, 0, 0},
+    };
+   
+    
+      System.out.println("truth table:");
+          for (int row= 0; row < examples.length; row++){ 
+      for(int col = 1; col < examples[row].length; col++){
+        System.out.print(examples[row][col]);
+      }
+      System.out.print("|");
+      System.out.println("/n");
+    }
+    
+    
+    for(int t=0; t< 1; t++){ //run examples x times
+      
+      
+    for(int i=0; i< numExamples; i++){
+      int percOut = result(examples[i]); //run result call it percOut
+      int expectedOut = examples[i][3];
+      int delta = expectedOut - percOut; //calculate Delta
+      
+      //display information
+     
+      System.out.println("expected output: " + examples[i][3]);
+      System.out.println("perceptron output: " + percOut); 
+      System.out.println("alpha: " + alpha);
+      System.out.println("delta: " + delta);
+      System.out.println("");
+      
+     
+      
+      //update weights
+      for (int x=0; x<weight.length; x++){
+        weight[x] += alpha*delta*examples[i][x];
+      }
+      
+      
+      int correct = 0;
+      if ( expectedOut== percOut){
+        correct++;
+        if ( correct == numExamples){}
+                                     
+                                     
+      }
+
+        
+      
+      System.out.println("");
+    }
+     
+    
+    
+  }
+  }
+  
+  
+  
+  /** result returns output of perceptron */
+  public static int result(int[] training){
+
+       
+    double inSum = training[0]*weight[0]; //bias
+    
+    for (int a= 1; a < training.length - 1; a++){
+      
+      inSum = inSum + training[a] * weight[a];
+    }
+    if (inSum >= 0){
+      return 1;
+    } else {
+      return 0;
+    }
+    
+  }
+  
+}

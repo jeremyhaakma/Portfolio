@@ -1,0 +1,11 @@
+DECLARE
+        CURSOR dc IS
+               SELECT * FROM dependent;
+        dep dc%ROWTYPE
+BEGIN
+        FOR dec IN dc
+        LOOP
+           DBMS_OUTPUT.PUT_LINE(dep.relationship);
+        END LOOP;
+END;
+/

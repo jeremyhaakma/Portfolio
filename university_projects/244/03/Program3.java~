@@ -1,0 +1,12 @@
+import java.util.Scanner;
+public class Program3 {
+
+    public static void main (String args[]){
+        Scanner scan = new Scanner(System.in);
+        String output = "";
+        while (scan.hasNextLine()){
+            output = String.toUpperCase(scan.nextLine());
+            System.out.println(output);
+        }
+    }
+}

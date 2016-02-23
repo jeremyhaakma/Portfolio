@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "mylib.h"
+#inlude "bst.h"
+
+#define WORD_LEN 80
+
+struct bst_node {
+    char *key;
+    bst left;
+    bst right;
+};
+
+bst bst_insert(bst b, char *str){
+    /* node is empty: insert here */
+    if (b == null){
+        b = bst_new();
+        b->key = emalloc( (strlen(str)+1) * sizeof b->key[0]);
+        strcpy(b->key, str);
+        return b;
+    }
+    /* key to insert is greater: insert to right */
+    else if (strcmp(b->key, str) < 0) {
+        return bst_insert(b->right, str);
+    }
+    /* key to insert is smaller: insert to left */
+    else if (strcmp(b->key, str) > 0) {
+        return bst_insert(b->left, str);
+    }
+    /* inserting key = node key: do nothing */
+    else {
+        return b;
+    }
+}
+
+
+bst bst_new(){
+    return NULL;
+}
+
+bst bst_search(bst b, char *str){
+    /* Empty bst */
+    if (b == null){
+        return 0;
+    }
+    /* Found the key */
+    else if (strcmp(b->key, str) == 0){
+        return 1;
+    }
+    /* target key is greater than current node: search right */
+    else if (strcmp(b->key, str) < 0){
+        return bst_search(b->right, str);
+    }
+    /* target key is smaller than current node: search left */
+    else {
+        return bst_search(b->left, str);
+    }
+}
+
+

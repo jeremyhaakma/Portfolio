@@ -1,0 +1,47 @@
+/* Author: Jeremy Haakma */
+/* Sorts an array of ints using an insertion sort algorithm */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#define ARRAY_MAX 30000
+
+   /* Sorts an array of ints. */
+   /* Iteratively takes each item from the unsorted */
+   /* part of the array and inserts it into the correct position in the */
+   /* sorted part of the array, shifting the others along. */
+   /* int *a: an array of ints to be sorted */
+   /* int length: the length of the array   */  
+void insertion_sort(int *a, int length) {
+    int pos; /*below pos = sorted, above pos = unsorted*/
+    int l;   /*scans through unsorted part of array*/
+    int key; /*value of item to be inserted */
+    for (pos = 1; pos <length; pos++){
+        key = a[pos];
+        l = pos -1;
+        while( a[l] > key ){
+            a[l+1]=a[l];
+            l--;
+        }
+        a[l+1]=key;
+    }
+}
+
+/* Main method. Reads in an array of ints from stdin, */
+/*  sorts them and prints out the sorted array */
+int main(void) {
+    int my_array[ARRAY_MAX];
+    int i, count = 0;
+    clock_t start, stop;
+    while (count < ARRAY_MAX && 1 == scanf("%d", &my_array[count])) {
+        count++;
+    }
+    start = clock();
+    insertion_sort(my_array, count);
+    stop = clock();
+    for (i = 0; i < count; i++) {
+        printf("%d\n", my_array[i]);
+    }
+    fprintf(stderr, "%d %f\n", count, (stop - start) / (double)CLOCKS_PER_SEC);
+    return EXIT_SUCCESS;
+}

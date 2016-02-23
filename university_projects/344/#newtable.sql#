@@ -1,0 +1,2 @@
+DROP TABLE newtable;
+CREATE TABLE newtable (

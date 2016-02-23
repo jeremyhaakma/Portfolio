@@ -1,0 +1,41 @@
+Preparation Questions
+Lab 3
+Jeremy Haakma
+
+Q1) InputStream
+
+Q2) read()
+
+Q3) int
+
+Q4) -1
+
+Q5) PrintStream
+
+Q6) write()
+
+Q7) int
+
+Q8)
+
+try{
+    int input = System.in.read();
+    while(input != -1){
+        System.out.write(input);
+        input = System.in.read();
+    }
+} catch (IOException e){
+    System.out.println("Error: " + e.getMessage() );
+}
+ 
+Q9) readLine()
+
+Q10) String, or null if nothing to read
+
+Q11) Scanner scan - new Scanner(System.in)
+
+Q12) hasNextLine()
+
+Q13) nextLine(), returns String
+
+Q14) next(), should call hasNext() first

@@ -1,0 +1,12 @@
+244 lab 09.
+Jeremy Haakma.
+
+ 01) The synchronized() method stops different threads of clients using
+ memory at the same time, causing read/write errors.
+
+ 02) Line 23:
+  "new ReadWriteThread(socket.getInputStream(), System.out).start();"
+
+ 03) Lines 31-41, the ReadWriteThread.run() method.
+
+ 04) 

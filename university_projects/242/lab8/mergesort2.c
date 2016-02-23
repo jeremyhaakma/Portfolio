@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define ARRAY_MAX 2000000
+int my_array[ARRAY_MAX];
+int workspace_array[ARRAY_MAX];
+/* Author: Jeremy Haakma */
+/* Sorts an array of ints using merge sort*/
+
+void insertion_sort(int *a, int n) {
+    int p;
+    int l;
+    int key;
+    for (p = 1; p<n; p++){
+        key = a[p];
+        l = p-1;
+        while( a[l] > key && l >= 0 ){
+            a[l+1]=a[l];
+            l--;
+        }
+        a[l+1]=key;
+    }
+}
+
+void merge(int *array, int *workspace, int len){
+    int i = 0; /* index starting left side of array */
+    int j = len/2; /* index starting right side of array */
+    int w = 0;
+    while (i < len/2 && j < len ){
+        if (array[i] < array[j]){
+            workspace[w] = array[i];
+            i++;
+        } else{
+            workspace[w] = array[j];
+            j++;
+        }
+        w++;
+    }
+    while (i < len/2){
+        workspace[w] = array[i];
+        i++;
+        w++;
+    }
+    while (j < len){
+        workspace[w] = array[j];
+        j++;
+        w++;
+    }   
+}
+
+
+/* merge sort function */
+/* array: array to be sorted */
+/* workspace: array used as workspace for sorting */
+/* n: number of items to sort (length of a) */
+void merge_sort(int *array, int *workspace, int n) {
+    int limit = 40; /* smallest size before insertion sort is called */
+    int i; /* for loop counter */
+    if (n < limit){
+        
+        insertion_sort(array, n);
+
+        return;
+    }
+    
+    if (n > 1){
+        merge_sort(array, workspace, n/2);
+        merge_sort( (array + (n/2)), workspace, (n-(n/2)) );
+        
+        merge(array, workspace, n);
+        for (i = 0; i < n; i++){
+            array[i] = workspace[i];  
+        }
+    }
+}
+
+int main(void) {
+
+    int i, count = 0;
+    clock_t start, stop;
+    while (count < ARRAY_MAX && 1 == scanf("%d", &my_array[count])) {
+        count++;
+    }
+    start = clock();
+    merge_sort(my_array, workspace_array, count);
+    stop = clock();
+    for (i = 0; i < count; i++) {
+        printf("%d\n", my_array[i]);
+    }
+    fprintf(stderr, "%d %f\n", count, (stop - start) / (double)CLOCKS_PER_SEC);
+    return EXIT_SUCCESS;
+}

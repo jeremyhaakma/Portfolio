@@ -1,0 +1,46 @@
+1. Hi to hi:
+   Hi.java:1: error: class hi is public, should be declared in a file named hi.java
+   public class hi {
+   ^
+   1 error
+
+2. Hello to hello: no errors
+
+3. Remove first quotation mark in String:
+   Hi.java:3: error: ')' expected
+   System.out.println(Hello, world!");
+   ^
+   Hi.java:3: error: unclosed string literal
+   System.out.println(Hello, world!");
+   ^
+   Hi.java:3: error: ';' expected
+   System.out.println(Hello, world!");
+   ^
+   Hi.java:5: error: reached end of file while parsing
+   }
+   ^
+   4 errors
+
+5. change main to man:
+   Error: Main method not found in class Hi, please define the main method as:
+   public static void main(String[] args)
+   or a JavaFX application class must extend javafx.application.Application
+
+6. change println to printline:
+    [[AHi.java:3: error: cannot find symbol
+    System.out.printline("Hello, world!");
+    ^
+    symbol:   method printline(String)
+    location: variable out of type PrintStream
+    1 error
+7. Remove semicolon:
+   Hi.java:3: error: ';' expected
+   System.out.println("Hello, world!")
+   ^
+   1 error
+8. Remove last brace:
+   Hi.java:4: error: reached end of file while parsing
+   }
+   ^
+   1 error
+

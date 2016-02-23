@@ -1,0 +1,27 @@
+COSC244
+Lab 6 Preparation Questions.
+
+1) ^
+
+2) Reads raw bytes from a file
+
+3)FileInputStream x = new FileInputStream(File f);
+
+4) read() returns next byte, or -1 if no more bytes to read
+
+5) Writes raw bytes to a file.
+
+6) FileOutputStream out = new FileOutputStream(File f);
+
+7) write(b.length)
+
+8) close();
+
+9)
+
+public class commandlines {
+       public static void main (String[] args);
+              String word = args[0];
+              int n = parseInt(args[1]);
+       }
+}

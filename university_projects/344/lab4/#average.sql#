@@ -1,0 +1,6 @@
+create or replace trigger average_orders
+after insert or update or delete of amt on orders
+for each row
+begin
+        if inserting then
+           update
