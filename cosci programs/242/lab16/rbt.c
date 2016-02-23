@@ -1,0 +1,254 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "mylib.h"
+#include "rbt.h"
+
+#define WORD_LEN 80
+#define IS_BLACK(x) ((NULL == (x)) || (BLACK == (x)->color))
+#define IS_RED(x) ((NULL != (x)) && (RED == (x)->color))
+
+typedef enum { RED, BLACK } rbt_color;
+
+struct rbt_node {
+    char *key;
+    rbt_color color;
+    rbt left;
+    rbt right;
+};
+
+
+static rbt right_rotate(rbt r) {
+    rbt temp = r;
+    r = temp->left;
+    temp->left = r->right;
+    r->right = temp;
+    return r;
+}
+
+static rbt left_rotate(rbt r) {
+    rbt temp = r;
+    r = temp->right;
+    temp->right = r->left;
+    r->left = temp;
+    return r;
+}
+
+
+static rbt rbt_fix(rbt r) {
+    if(IS_RED(r->left) && IS_RED(r->left->left) ){
+        if (IS_RED(r->right) ){
+            r->color = RED;
+            r->left->color = BLACK;
+            r->right->color = BLACK;
+        } else{
+            r = right_rotate(r);
+            r->color = BLACK;
+            r->right->color = RED;
+        }
+    }
+    if (IS_RED(r->left) && IS_RED(r->left->right) ){
+        if (IS_RED(r->right) ){
+            r->color = RED;
+            r->left->color = BLACK;
+            r->right->color = BLACK;
+        } else{
+            r->left = left_rotate(r->left);
+            r = right_rotate(r);
+            r->color = BLACK;
+            r->right->color = RED;
+        }
+    }
+    if (IS_RED(r->right) && IS_RED(r->right->left) ){
+        if (IS_RED(r->left) ){
+            r->color = RED;
+            r->left->color = BLACK;
+            r->right->color = BLACK;
+        } else{
+            r->right = right_rotate(r->right);
+            r = left_rotate(r);
+            r->color = BLACK;
+            r->left->color = RED;
+        }
+    }
+    if (IS_RED(r->right)&& IS_RED(r->right->right) ){
+        if (IS_RED(r->left) ){
+            r->color = RED;
+            r->left->color = BLACK;
+            r->right->color = BLACK;
+        } else{
+            r = left_rotate(r);
+            r->color = BLACK;
+            r->left->color = RED;
+        }
+    }
+    return r;
+}
+
+rbt rbt_new() {
+    return NULL;
+}
+
+
+
+rbt rbt_insert(rbt r, char *str) {
+    /* If we’re trying to insert into an empty tree:
+       Allocate memory, copy in the key, return the result. */
+    if (r == NULL) {
+        /* Create new rbt_node (????) */
+        r = emalloc(sizeof *r);
+        r->color = RED;
+        /* Allocate memory for the string and copy it across */
+        r->key = emalloc((strlen(str)+1) * sizeof r->key[0]);
+        strcpy(r->key, str);
+
+        /* Set both left and right leave to NULL */
+        r->left = r->right = NULL;
+    }
+
+    /* If the key to be inserted is smaller then we should insert into the left subtree */
+    else if (strcmp(str, r->key) < 0) {
+        r->left = rbt_insert(r->left, str);
+    }
+
+    /* If the key to be inserted is greater we should insert into the right subtree */
+    else if (strcmp(str, r->key) > 0) {
+        r->right = rbt_insert(r->right, str);
+    }
+
+    /* Else if it’s the same, do nothing */
+
+    /* Then return r */
+    r = rbt_fix(r);
+    return r;
+}
+
+void rbt_inorder(rbt r, void f(char *str)) {
+    /* Stopping case is when r is NULL */
+    if (r == NULL) {
+        return;
+    }
+
+    /* Inorder traversal of the left subtree */
+    rbt_inorder(r->left, f);
+
+    /* Apply function F to r->key */
+    f(r->key);
+
+    /* Inorder traversal of the right subtree */
+    rbt_inorder(r->right, f);
+}
+
+void rbt_preorder(rbt r) {
+    /* Stopping case is when r is NULL */
+    if (r == NULL) {
+        return;
+    }
+
+    if (IS_RED(r) ){
+        printf("Red: ");
+    } else {
+        printf("Black: ");
+    }
+    printf("%s\n", r->key);
+
+    /* Preorder traversal of the left subtree */
+    rbt_preorder(r->left);
+
+    /* Preorder traversal of the right subtree */
+    rbt_preorder(r->right);
+}
+
+int rbt_search(rbt r, char *str) {
+    /* Stopping case is when r is NULL */
+    if (r == NULL) {
+        return 0;
+    }
+
+    /* If r contains the string we are searching for: */
+    else if (strcmp(str, r->key) == 0) {
+        return 1;
+    }
+
+    /* Search left tree if string is less-than r->key */
+    else if (strcmp(str, r->key) < 0) {
+        return rbt_search(r->left, str);
+    }
+
+    /* Search right tree if string is greater-than r->key */
+    else if (strcmp(str, r->key) > 0) {
+        return rbt_search(r->right, str);
+    }
+
+    return 0;
+}
+
+rbt rbt_delete(rbt r, char *str) {
+    /* If the current node is NULL */
+    if (r == NULL) {
+        return r;
+    }
+    /* If we find the key in r, Splice out the node: */
+    else if (strcmp(str, r->key) == 0) {
+
+        /* If r is a leaf free the key and node, set the nodes pointer to NULL: */
+        if ((r->left == NULL) && (r->right == NULL)) {
+            free(r->key);
+            free(r);
+            r = rbt_new();
+        }
+
+        /* If r has only one child make the pointer point to the child instead: */
+        else if (r->left == NULL) {
+            strcpy(r->key, r->right->key);
+            r->right = rbt_delete(r->right, r->key);
+        } else if (r->right == NULL) {
+            strcpy(r->key, r->left->key);
+            r->left = rbt_delete(r->left, r->key);
+        }
+
+        /* If r has two children: */
+        else {
+            /*
+              Find the left most child of the right sub-tree (the "Successor")	
+              Copy successor->key to r->key
+              Delete the new key from the right sub-tree
+            */
+            rbt successor = r->right;
+            while (successor->left != NULL) {
+                successor = successor->left;
+            }	
+            strcpy(r->key, successor->key);
+            r->right = rbt_delete(r->right, r->key);
+        }
+    }
+    /* Search left tree if string is less-than r->key */
+    else if (strcmp(str, r->key) < 0) {
+        r->left = rbt_delete(r->left, str);
+    }
+    /* Search right tree if string is greater-than r->key */
+    else if (strcmp(str, r->key) > 0) {
+        r->right = rbt_delete(r->right, str);
+    }
+
+    return r;
+}
+
+rbt rbt_free(rbt r) {
+
+    /* Postorder traversal of the left subtree */
+    if (r->left != NULL) {
+        rbt_free(r->left);
+    }
+	
+    /* Postorder traversal of the right subtree */
+    if (r->right != NULL) {
+        rbt_free(r->right);
+    }
+
+    free(r->key);
+    free(r);
+    r = rbt_new();
+
+    return r;
+}

@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "mylib.h"
+#include "rbt.h"
+
+void print_key(char *s) {
+    printf("%s\n", s);
+}
+
+int main(void) {
+
+    rbt r;
+    char word[256];
+
+    r = rbt_new();
+    
+    while (getword(word, sizeof word, stdin) != EOF) {
+        r = rbt_insert(r, word);
+    }
+
+   
+    printf("Preorder Traversal:\n");
+    rbt_preorder(r);
+
+
+    printf("Freeing Tree:\n");
+    r = rbt_free(r);
+
+    printf("Inorder Traversal:\n");
+    rbt_inorder(r, print_key);
+        
+    printf("Inorder Traversal:\n");
+    rbt_inorder(r, print_key);
+
+    return EXIT_SUCCESS;
+}

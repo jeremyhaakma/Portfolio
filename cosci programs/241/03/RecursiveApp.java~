@@ -1,0 +1,29 @@
+package week03;
+/**
+ * RecursiveApp.
+ * Uses recursive logic to calculate the length and sum of an input.
+ * @author Jeremy Haakma
+ */
+
+
+public class RecursiveApp{
+    /** Main method.
+     * @param args
+     */
+    public static void main(String[] args){
+        digits(30);
+    }
+    /** digits method.
+     * @param n
+     */
+    public static long digits(long n){
+        if (n<10){
+            System.out.println(1);
+            return 1;
+        }
+        System.out.println(1 + digits(n/10));
+        return 1 + digits(n/10);
+        
+    }
+
+}

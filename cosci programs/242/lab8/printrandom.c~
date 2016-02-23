@@ -1,0 +1,12 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+int main(int argc, char **argv){
+    int num = atoi(argv[1]); /*how many numbers to print out */
+    int i;
+    argc=argc;
+    for (i=0; i < num; i++){
+        printf("%d\n", rand()%100 );
+    }
+    return EXIT_SUCCESS;
+}

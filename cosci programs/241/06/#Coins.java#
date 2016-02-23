@@ -1,0 +1,3 @@
+public int countHeads(){
+    for (boolean b :
+}

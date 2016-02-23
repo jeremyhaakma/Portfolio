@@ -1,0 +1,9 @@
+
+SQL*Loader: Release 11.2.0.2.0 - Production on Mon Jul 20 13:05:59 2015
+
+Copyright (c) 1982, 2009, Oracle and/or its affiliates.  All rights reserved.
+
+SQL*Loader-350: Syntax error at line 1.
+Expecting keyword LOAD, found keyword insert.
+insert into lab2a values(1, 2.4, 'hello', '09-JAN-1990');
+^

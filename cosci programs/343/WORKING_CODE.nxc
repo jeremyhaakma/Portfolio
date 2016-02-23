@@ -1,0 +1,419 @@
+//Group Members: Jeremy Haakma, Scott Wyngaarden, Rory Mearns, Lencho.
+
+mutex moveMutex;
+
+int speed = 50;
+bool bottleFound = false; //set true when reach bottle.
+int speckledUpper = 0;
+int gritUpper = 0;
+int gritLower = 0;
+
+int blackCount = 1;
+
+#define NEAR 40		//cm
+int finalRun = 3900;
+string tileOn = "SPECKLED";
+
+
+
+sub alignBlack(){
+	Acquire(moveMutex);
+	Off(OUT_BC);
+	
+	int initCount = 0;
+	int rotaCountB = 0;
+	int rotaCountC = 0;
+	int midpoint = 0;
+
+//move to the left until grit, then move back to start
+	initCount = MotorRotationCount(OUT_B);
+		
+	//rotate right motor forward until it reaches grit
+	while(SENSOR_1< gritLower){
+		OnFwd(OUT_B, speed*0.7);
+	}
+	
+  	Off(OUT_BC);
+
+	//rotaCountB equals distance turned left
+	rotaCountB = MotorRotationCount(OUT_B) - initCount;
+
+	RotateMotor(OUT_B, speed*0.7, -rotaCountB);
+
+
+//move to the right until grit, then move back to start
+	initCount = MotorRotationCount(OUT_C);
+	
+	//rotate left motor forward until it reaches grit
+	while(SENSOR_1<gritLower){
+		OnFwd(OUT_C, speed*0.7);
+	}
+
+  	Off(OUT_BC);
+	
+	//rotaCountC equals the distance turned right
+	rotaCountC = MotorRotationCount(OUT_C) - initCount;
+
+	RotateMotor(OUT_C, speed*0.7, -rotaCountC);
+
+
+//aligning
+	midpoint = (rotaCountB + rotaCountC)/2;
+
+	if(rotaCountB < rotaCountC/2){
+		RotateMotor(OUT_C, speed*0.7, 90);
+	}else if(rotaCountC<rotaCountB/2){
+		RotateMotor(OUT_B, speed*0.7, 90);
+	}else if(rotaCountB<midpoint){
+		RotateMotor(OUT_C, speed*0.7, midpoint-rotaCountB);	
+	}else if(rotaCountC<midpoint){
+		RotateMotor(OUT_B, speed*0.7, midpoint-rotaCountC);
+	}
+			
+	Release(moveMutex);
+	
+}//end alignBlack
+
+sub alignWhite(){
+	Acquire(moveMutex);
+	Off(OUT_BC);
+	
+	int initCount = 0;
+	int rotaCountB = 0;
+	int rotaCountC = 0;
+	int midpoint = 0;
+
+//move to the left until grit, then move back to start
+	initCount = MotorRotationCount(OUT_B);
+		
+	//rotate right motor forward until it reaches grit
+	while(SENSOR_1 > speckledUpper){
+		OnFwd(OUT_B, speed*0.7);
+	}
+  	Off(OUT_BC);
+
+	//rotaCountB equals distance turned left
+	rotaCountB = MotorRotationCount(OUT_B) - initCount;
+
+	RotateMotor(OUT_B, speed*0.7, -rotaCountB);
+
+
+//move to the right until grit, then move back to start
+	initCount = MotorRotationCount(OUT_C);
+	
+	//rotate left motor forward until it reaches grit
+	while(SENSOR_1 >= speckledUpper){
+		OnFwd(OUT_C, speed*0.7);
+	}
+
+  	Off(OUT_BC);
+	
+	//rotaCountC equals the distance turned right
+	rotaCountC = MotorRotationCount(OUT_C) - initCount;
+
+	RotateMotor(OUT_C, speed*0.7, -rotaCountC);
+
+
+//aligning
+	midpoint = (rotaCountB + rotaCountC)/2;
+
+	if(rotaCountB < rotaCountC/2){
+		RotateMotor(OUT_C, speed*0.7, 90);
+	}else if(rotaCountC<rotaCountB/2){
+		RotateMotor(OUT_B, speed*0.7, 90);
+	}else if(rotaCountB<midpoint){
+		RotateMotor(OUT_C, speed*0.7, midpoint-rotaCountB);	
+	}else if(rotaCountC<midpoint){
+		RotateMotor(OUT_B, speed*0.7, midpoint-rotaCountC);
+	}
+			
+	Release(moveMutex);
+	
+}//end alignWhite
+
+sub phase2(){
+
+	int initRotation = MotorRotationCount(OUT_B);
+	int currentRotation = 0;
+	
+	int initRotaB = MotorRotationCount(OUT_B);
+	int turnCountB = 0;
+
+	while(SENSOR_1 > gritUpper){
+		OnFwd(OUT_B, 20);
+	}
+	Off(OUT_BC);
+	turnCountB = MotorRotationCount(OUT_B) - initRotaB;
+	RotateMotor(OUT_C, 20, turnCountB);
+	
+
+
+
+	while(currentRotation<finalRun){
+		currentRotation = MotorRotationCount(OUT_B)-initRotation;
+		while(SENSOR_1 > gritUpper || SENSOR_1 <= gritLower) {								// WHILE: on anything other than grit
+			OnFwd(OUT_B,30);
+			OnFwd(OUT_C,20);
+		}
+		while(SENSOR_1 <= gritUpper && SENSOR_1 > gritLower) {								// WHILE: on grit
+			OnFwd(OUT_C,40);
+			OnFwd(OUT_B,20);
+		}
+	}
+
+	SetSensorLowspeed(IN_4);
+	SetSensorTouch(IN_2);
+	SetSensorTouch(IN_3);
+
+	SetSensorLowspeed(IN_4);
+	SetSensorTouch(IN_2);
+	SetSensorTouch(IN_3);
+
+
+	while(true) {
+
+//CHANGED SOME SHIT
+		Off(OUT_BC);
+		OnFwd(OUT_C, 20);
+		OnRev(OUT_B, 20);
+		
+		if(SensorUS(IN_4) < NEAR){
+			Off(OUT_BC);
+			int startCount = MotorRotationCount(OUT_C);
+			int finishCount = 0;
+
+			while(MotorRotationCount(OUT_C)< startCount+360){
+				OnFwd(OUT_C, 20);
+				if(SensorUS(IN_4) < NEAR){
+					finishCount = MotorRotationCount(OUT_C);	
+				}
+			}
+
+			Off(OUT_BC);
+		
+			int midrange = (finishCount - startCount)/2;
+			RotateMotor(OUT_C, 20, -(360-midrange) );
+			
+
+//CHANGES FINISHED
+			RotateMotor(OUT_BC, 40, -180);
+				
+			//wiggle wiggle
+			OnFwd(OUT_B, speed);
+			OnRev(OUT_C, speed);Wait(75);
+
+			OnRev(OUT_B, speed);
+			OnFwd(OUT_C, speed);Wait(150);
+
+			OnFwd(OUT_B, speed);
+			OnRev(OUT_C, speed);Wait(150);
+
+			OnRev(OUT_B, speed);
+			OnFwd(OUT_C, speed);Wait(150);
+
+			OnFwd(OUT_B, speed);
+			OnRev(OUT_C, speed);Wait(75);
+	
+			Off(OUT_BC);
+	
+			OnFwd(OUT_BC, 90);
+			
+			until (SENSOR_2 == 1 || SENSOR_3 == 1);
+			OnFwd(OUT_BC, 90); Wait(700);
+			Off(OUT_BC);Wait(1000);
+			bottleFound = true;
+			speed = 0;
+			if (bottleFound){
+				TextOut(20, 20, "FOUND IT!");
+			}			
+			
+			PlayTone(523.25, 150); Wait(200); //C
+			PlayTone(523.25, 150); Wait(200); //C
+			PlayTone(523.25, 150); Wait(200); //C 
+			PlayTone(523.25, 550); Wait(600); //C long
+			PlayTone(415.3, 550); Wait(600); // Ab long
+			PlayTone(466.16, 550); Wait(600); // Bb long
+			PlayTone(523.25, 150); Wait(200); //C 
+			Wait(200);
+			PlayTone(466.16, 150); Wait(200); // Bb
+			PlayTone(523.25, 1200); Wait(1200); //C long
+			break;
+
+	
+		}
+	}
+}
+
+
+//checktile task
+task checkTile(){
+	//PHASE 1
+	while(blackCount < 15){
+		if(gritLower < SENSOR_1 && SENSOR_1 < speckledUpper){
+			Acquire(moveMutex);
+			
+
+			//move forward a small amount and check again
+			OnFwd(OUT_BC, 20);Wait(200);
+			Off(OUT_BC);
+			Release(moveMutex);
+
+			//black tile, add countBlack
+			if(SENSOR_1 <= gritLower){ 
+				blackCount++;
+				alignBlack();
+				tileOn = "BLACK";	
+			} else if (SENSOR_1 >= speckledUpper){
+				alignWhite();
+				tileOn = "WHITE";
+			}
+			
+		}
+	}
+
+	//PHASE 2
+	if(blackCount >= 15){
+		Acquire(moveMutex);
+		Off(OUT_BC);
+
+		OnFwd(OUT_BC, speed/2);
+		while( SENSOR_1 < gritLower || gritUpper < SENSOR_1){}
+		Off(OUT_BC);
+
+		gritLower = SENSOR_1;
+			for(int i = 0; i < 50; i++){
+				OnRev(OUT_BC, speed/2);Wait(10);
+				if (SENSOR_1 < gritLower){
+					gritLower = SENSOR_1;
+				}
+			}
+			Off(OUT_BC);
+			
+		RotateMotor(OUT_C, speed/2, 360);
+	
+		gritUpper = SENSOR_1;
+		for(int i = 0; i < 50; i++){
+			OnFwd(OUT_C, speed/2);Wait(10);
+			if (SENSOR_1 < gritUpper){
+				gritUpper = SENSOR_1;
+			}
+		}
+		OnRev(OUT_C, speed/2);Wait(500);
+		gritUpper = gritUpper - 5;
+		Off(OUT_BC);
+		
+		phase2();
+		Release(moveMutex);
+
+	}
+	
+}//end check tile
+
+
+//move task
+task move(){
+	while(bottleFound == false){
+		Acquire(moveMutex);
+		OnFwd(OUT_BC, speed);
+		Release (moveMutex);
+	}
+}//end move
+
+//info task
+task info(){
+	while(true){
+		TextOut(50, 50, "lightlvl");
+		NumOut(50, 40, SENSOR_1);
+		
+		TextOut(0, 50, "speckledUpper");
+		NumOut(20, 40, speckledUpper);
+		TextOut(0, 30, "gritUpper");
+		NumOut(20, 20, gritUpper);
+		TextOut(0, 10, "gritLower");
+		NumOut(20, 0, gritLower);
+		TextOut(50, 0, tileOn);
+		
+	}
+}
+
+
+//Main task
+task main(){
+	SetSensorLight(IN_1);
+
+	gritUpper = SENSOR_1;
+	speckledUpper = SENSOR_1;
+
+
+//caibrations from speckled tile
+	Acquire(moveMutex);
+	for(int i = 0; i < 50; i++){
+		OnFwd(OUT_BC, speed);Wait(10);
+		if (SENSOR_1 > speckledUpper){
+			speckledUpper = SENSOR_1;
+		}else if(SENSOR_1 < gritUpper){
+			gritUpper = SENSOR_1;
+		}
+	}
+
+	speckledUpper -= 5;
+
+
+
+	OnFwd(OUT_BC, speed);
+
+	//when it hits grit, turn 90 degrees
+	while(true){
+		
+		if (SENSOR_1 < speckledUpper){
+			Off(OUT_BC);
+
+			RotateMotor(OUT_BC, speed, 80);
+			
+			//calibrate white lower
+			speckledUpper = SENSOR_1;
+			for(int i = 0; i < 50; i++){
+				OnFwd(OUT_BC, speed/2);Wait(10);
+				if (SENSOR_1 < speckledUpper){
+					speckledUpper = SENSOR_1;
+				}
+			}
+			Off(OUT_BC);
+
+			for(int i = 0; i < 50; i++){
+				OnRev(OUT_BC, speed/2);Wait(10);
+				if (SENSOR_1 < speckledUpper){
+					speckledUpper = SENSOR_1;
+				}
+			}
+			Off(OUT_BC);
+			speckledUpper -= 1;
+
+			
+			RotateMotor(OUT_B, speed, 360);//rotate 90
+			tileOn = "BLACK";
+
+			//calibrate gritLower based on black tile
+			gritLower = SENSOR_1;
+			for(int i = 0; i < 50; i++){
+				OnRev(OUT_BC, speed/2);Wait(10);
+				if (SENSOR_1 < gritLower){
+					gritLower = SENSOR_1;
+				}
+			}
+			Off(OUT_C);
+			for(int i = 0; i < 50; i++){
+				OnFwd(OUT_BC, speed/2);Wait(10);
+				if (SENSOR_1 < gritLower){
+					gritLower = SENSOR_1;
+				}
+			}
+			gritLower += 5;
+			Off(OUT_BC);
+			Release(moveMutex);
+			alignBlack();
+			break;
+		}
+	}
+	Precedes(checkTile, move, info);
+}//end main

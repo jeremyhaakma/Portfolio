@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define ARRAY_LEN 100
+#define BUFF_SIZE 80
+
+void *emalloc(size_t s){
+    void *result = malloc(s);
+    if (NULL == result) {
+        fprintf(stderr, "Can't allocate memory\n");
+        exit(EXIT_FAILURE);
+    }
+    return result;
+}
+
+int main(void) {
+    char *words[ARRAY_LEN];
+    char word[BUFF_SIZE];
+    int count = 0;
+    int i;
+    double average = 0.0;
+
+    while(count < ARRAY_LEN && 1 == scanf("%3s", word)){
+        words[count] = emalloc((strlen(word) +1) * sizeof word[0] );
+        strcpy(words[count++], word);
+        average += strlen(word);
+    }
+    for (i = 0; i < count; i++) {
+        printf("%d %s\n", i, words[i]);
+    }
+
+    return EXIT_SUCCESS;
+}

@@ -1,0 +1,1 @@
+gcc -W -Wall -O2 -ansi -pedantic -g using-math.c -o print-sqrts -lm

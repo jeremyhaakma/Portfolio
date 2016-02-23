@@ -1,0 +1,9 @@
+
+SQL*Loader: Release 11.2.0.2.0 - Production on Thu Aug 13 12:49:49 2015
+
+Copyright (c) 1982, 2009, Oracle and/or its affiliates.  All rights reserved.
+
+SQL*Loader-350: Syntax error at line 1.
+Expecting keyword LOAD, found "DROP".
+DROP TABLE schedule;
+^

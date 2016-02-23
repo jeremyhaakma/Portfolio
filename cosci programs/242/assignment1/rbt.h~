@@ -1,0 +1,66 @@
+#ifndef RBT_H_
+#define RBT_H_
+
+typedef struct rbt_node *rbt;
+
+/**
+ * Creates a new RBT node.
+ *
+ * All new RBT nodes are NULL
+ * @return rbt Empty RBT with value NULL.
+ */
+extern rbt 	rbt_new();
+
+/**
+ * Insert string into RBT.
+ *
+ * @param r RBT to insert the string into.
+ * @param str String to insert.
+ * @return rbt RBT with new string inserted.
+ */
+extern rbt 	rbt_insert(rbt r, char *str);
+
+/**
+ * Search an RBT for a string
+ *
+ * @param r RBT to search for the string.
+ * @param str String to be searched for.
+ * @return 1 if string is found, 0 if otherwise.
+ */
+extern int 	rbt_search(rbt r, char *str);
+
+/**
+ * In-Order traversal of RBT with input function applied.
+ *
+ * The function passed as a parameter must take a single
+ * string value as a parameter. 
+ * @param r RBT to traverse.
+ * @param f Function to be applied to each node.
+ */
+extern void rbt_inorder(rbt r, void f(char *str));
+
+/**
+ * Pre-Order traversal of RBT printing each key.
+ *
+ * @param r RBT to traverse.
+ */
+extern void rbt_preorder(rbt r);
+
+/**
+ * Delete a string from RBT if present.
+ *
+ * @param r RBT to delete string from.
+ * @param str String to be deleted.
+ * @return rbt RBT with string deleted.
+ */
+extern rbt 	rbt_delete(rbt r, char *str);
+
+/**
+ * Free all memory associated with an RBT.
+ *
+ * @param r RBT to be freed.
+ * @return rbt Empty RBT with NULL value.
+ */
+extern rbt 	rbt_free(rbt r);
+
+#endif

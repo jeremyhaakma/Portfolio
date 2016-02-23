@@ -1,0 +1,72 @@
+Q1 Explain the purpose of the send() method of ClientHandler
+
+   This method prints out messages recieved from other clients. 
+
+
+Q2 Where is the line in send() going to?
+
+   The line is being sent to an instance of PrintWriter which prints it to the OutputStream
+
+
+Q3 Explain the purpose of the toString() method of ClientHandler.
+
+   Allows for the client number to be printed out. This is used to identify which client
+   sent a particular message. 
+
+
+Q4 When a client closes a connection and terminates, and then a new
+client connects, is the client number recycled? Why or why not?
+
+       The number is not recycled. This is so that messages by new clients
+       can be distinguished from those left by clients who have now left.
+       
+
+
+Q5 List the lines of code executed when the ChatServer starts up to
+the point where it is listening for its first connection. The list
+should be in execution order.
+
+       13    new ChatServer().startServer(Integer.parseInt(args[0]));
+       
+       20    public void startServer(int port) throws Exception {
+       21    ServerSocket serverSocket = new ServerSocket(port);
+       22    System.err.println("ChatServer started");
+       23    while (true) {
+       24    ClientHandler ch = new ClientHandler(serverSocket.accept())
+
+       
+
+
+Q6 If 3 clients have connected to ChatServer, how many threads are
+running assuming no client has terminated. Include the client threads
+in your count.
+
+13 threads in total: ChatServer main thread
+                     3 ChatServer ClientHandler threads
+                     3 Client main threads
+                     6 Client ReadWriteThreads
+
+
+
+Q7 Describe what each thread from Q6 is doing. For threads which are
+performing the same task but for different clients, you should state
+how many of that particular thread is running. If you did not correctly
+answer Q6, complete this question after you get the correct answer and
+before you leave the lab. You will not get the mark for this lab until
+both questions are answered correctly.
+
+     ChatServer main creates new ClientHandler threads and listens
+     to them for input from connected clients
+
+     Each ClientHandler thread sends input from the ChatServer to
+     its respective client, and sends any input it receives from
+     the InputStream back to the ChatServer.
+
+     Each Client thread connects to the server via a socket and
+     creates 2 new ReadWriteThreads
+
+     The ReadWriteThreads create new BufferedReaders and PrintWriters
+     to listen for input to send through an OutputStream. Each client
+     has 2 ReadWriteThreads; one to receive messages from the Server
+     and print it to System.out, and the other to receive input from
+     the user (via System.in), and send it to the Server.

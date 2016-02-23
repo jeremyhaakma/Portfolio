@@ -1,0 +1,46 @@
+Lab 08 Preparation Questions
+
+1) subclass: Have the class extend the Thread class, then overwrite
+the run method. Then you can create an instance and start it as a thread
+
+Interface: Have the class implement the runnable interface, requiring it
+to implement the run method. To start a thread, create a new thread and pass
+an instance of the class as a parameter
+
+2) run()
+
+3) start()
+
+4) At lines 14 and 15
+14 new ReadWriteThread(System.in, socket.getOutputStream()).start();
+15 new ReadWriteThread(socket.getInputStream(), System.out).start();
+
+5) Create and start new ReadWriteThreads. The first one reads from System.in
+and outputs to the socket, while the second reads from the socket input and
+outputs to System.out.
+
+6) No, because they are both running concurrently
+
+7)
+// Client.java
+
+import java.net.*;
+
+public class Client {
+
+     public static void main(String[] args) {
+           Socket socket;
+           try {                    
+               int port = Integer.parseInt(args[0]);
+               socket = new Socket(args[1], port);
+               System.err.println("Connected to " + args[1] + "on port " + port);
+               new ReadWriteThread(System.in, socket.getOutputStream()).start();
+               new ReadWriteThread(socket.getInputStream(), System.out).start();
+           } catch (Exception e) {
+               e.printStackTrace();
+               System.err.println("\nUsage: java Client <port> <host>");
+           }
+     }
+}
+
+8) One thread wakes up and starts printing to System.out while the first thread is trying to, then the first thread starts printing again, causing the lines to be jumbled. 

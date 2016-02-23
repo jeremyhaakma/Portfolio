@@ -1,0 +1,32 @@
+Preparation questions week 07
+
+1) Reads bytes and decodes to character streams
+
+2) best efficiency: wrap it in a buffered reader:
+
+BufferedReader in
+       = new BufferedReader(new InputStreamReader(System.in));
+
+3) readLine() returns a String, not including termination characters, or null
+
+4) prints a string and terminates the line. Returns nothing (void)
+
+5) Creates a server socket bound to the specified port
+
+6) Listens to a connection and accepts it. Blocks until connection is
+   established.
+
+7) Socket(InetAddress address, int port)
+
+8) returns input stream for reading bytes from the socket
+
+9) getOutputStream()
+
+10) Initialised to the current time
+
+
+11) System.out.printf(stdout, new Date());
+
+12) Prints the port and host information
+    <port> gives the port number,
+    [host] gives the host name, if there is one.  

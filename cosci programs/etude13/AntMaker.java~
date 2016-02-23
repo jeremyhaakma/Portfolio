@@ -1,0 +1,106 @@
+import java.util.Scanner;
+import java.util.Random;
+import java.io.PrintWriter;
+
+public class AntMaker{
+
+  private static int antNum;
+  private static int zombieNum;
+  
+  public static void main (String[] args){
+    
+    Scanner scan = new Scanner(System.in);
+    
+    System.out.println("Enter Platform length (recommended: 100)");
+    int length = scan.nextInt();
+    String output = "Plane\nLength " + length;
+    
+    System.out.println("Enter Platform width (recommended: 100)");
+    int width = scan.nextInt();
+    output = output + "\nWidth " + width + 
+      "\nDuration 800\n\n";
+    
+    System.out.println("Enter number of ants (recommended: 20)");
+    antNum = scan.nextInt();
+    System.out.println("Enter number of zombies (recommended: 1)");
+    zombieNum = scan.nextInt();
+    
+    
+    //System.out.println("Enter seed");
+    //int seed = scan.nextInt();
+    Random r = new Random();
+    
+    //ant black DNA
+    String blackDNA = "";
+    for(int i = 0; i < 4; i++){
+      blackDNA = blackDNA + (r.nextBoolean() ? (r.nextBoolean() ? 'N' : 'S') : (r.nextBoolean() ? 'E' : 'W') );
+    }
+    blackDNA = blackDNA + '_';
+    for(int i = 0; i < 4; i++){
+      blackDNA = blackDNA + (r.nextBoolean() ? 'b' : 'w' );
+    }
+    
+    //ant white DNA
+    String whiteDNA = "";
+    for(int i = 0; i < 4; i++){
+      whiteDNA = whiteDNA + (r.nextBoolean() ? (r.nextBoolean() ? 'N' : 'S') : (r.nextBoolean() ? 'E' : 'W') );
+    }
+    whiteDNA = whiteDNA + '_';
+    for(int i = 0; i < 4; i++){
+      whiteDNA = whiteDNA + (r.nextBoolean() ? 'b' : 'w' );
+    }
+    
+    for(int i = 0; i < antNum; i++){
+      output = output + 
+        "Ant\n" + 
+        "xPos " + r.nextInt(width) + 
+        "\nyPos " + r.nextInt(length) + 
+        "\ninfected false\n" + 
+        blackDNA + "\n" + 
+        whiteDNA + "\n\n";
+    }
+    
+    //zombie black DNA
+    
+    //ant black DNA
+    String zombieBlackDNA = "";
+    for(int i = 0; i < 4; i++){
+      zombieBlackDNA = zombieBlackDNA + (r.nextBoolean() ? (r.nextBoolean() ? 'N' : 'S') : (r.nextBoolean() ? 'E' : 'W') );
+    }
+    zombieBlackDNA = zombieBlackDNA + '_';
+    for(int i = 0; i < 4; i++){
+      zombieBlackDNA = zombieBlackDNA + (r.nextBoolean() ? 'b' : 'w' );
+    }
+    
+    //ant white DNA
+    String zombieWhiteDNA = "";
+    for(int i = 0; i < 4; i++){
+      zombieWhiteDNA = zombieWhiteDNA + (r.nextBoolean() ? (r.nextBoolean() ? 'N' : 'S') : (r.nextBoolean() ? 'E' : 'W') );
+    }
+    zombieWhiteDNA = zombieWhiteDNA + '_';
+    for(int i = 0; i < 4; i++){
+      zombieWhiteDNA = zombieWhiteDNA + (r.nextBoolean() ? 'b' : 'w' );
+    }
+    
+    for(int i = 0; i < zombieNum; i++){
+      output = output + 
+        "Ant\n" + 
+        "xPos " + r.nextInt(width) + 
+        "\nyPos " + r.nextInt(length) + 
+        "\ninfected true\n" + 
+        zombieBlackDNA + "\n" + 
+        zombieWhiteDNA + "\n\n";
+    }
+    try{
+    PrintWriter writer = new PrintWriter("generatedAnts.txt");
+    writer.println(output);
+    writer.close();
+    } catch (Exception e){
+    
+    }
+
+    
+    
+  }//end main
+  
+}//end class
