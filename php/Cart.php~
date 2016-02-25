@@ -6,7 +6,6 @@
  * class, so it will run on its own.
  * 
  * @author: Jeremy Haakma
- *
  */
 session_start();
 
