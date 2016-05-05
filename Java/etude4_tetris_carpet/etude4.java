@@ -94,11 +94,28 @@ public class etude4 {
   
   public static void main (String[] args) {
     Scanner scanner = new Scanner(System.in);
-    while(scanner.hasNext()) {
+    String result;
+    long time; //time to process result
+     System.out.println("Enter carpet width (max width 6):");
       width = scanner.nextInt();
+      System.out.println("Enter carpet height (max height 100):");
       height = scanner.nextInt();
-      nextScenario();
-    }
+      //Ensure carpet area is factor of 4
+      if ( (width*height)%4 == 0){
+        System.out.println("Calculating...");
+        //Time the process
+        long startTime = System.currentTimeMillis();
+        result = nextScenario();
+        long endTime = System.currentTimeMillis();
+        time = (endTime - startTime);
+        System.out.println("There are " + result + " possible combinations for a carpet of " +
+                         "width " + width + " and height "+ height +". It took " + time + " milliseconds to calculate.\n");
+   
+      } else {
+        System.out.println("There are 0 possible combinations for a carpet of " +
+                         "width " + width + " and height "+ height +". The area of the carpet must be a factor of 4.");
+        
+      }
     
   } //end main
 
@@ -106,7 +123,7 @@ public class etude4 {
    *
    *
    */
-  public static void nextScenario () {
+  public static String nextScenario () {
     map = new HashMap<String, BigInteger[]>(6000);
     
     
@@ -127,7 +144,7 @@ public class etude4 {
     
     // Start recursion, then print solution
     BigInteger solution = solve(initialCarpet);
-    System.out.println(solution.toString());
+    return solution.toString();
 
   }
 
